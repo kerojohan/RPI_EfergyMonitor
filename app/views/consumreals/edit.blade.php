@@ -1,0 +1,1 @@
+/var/www/efergyMonitor/app/views/consumreals/edit.blade.php
