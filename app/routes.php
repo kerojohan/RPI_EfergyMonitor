@@ -21,26 +21,50 @@ Route::get('/consumsrealjson', function()
 {
     	$a=array();
     	$consums=array();
-    	$a['label']="consums";
-    	
-  $ara=(new DateTime());
-  $from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
-  $to=(new DateTime())->format('Y-m-d H:i:s');
+    	$a['label']="consums";  	
+      $ara=(new DateTime());
+      $from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
+      $to=(new DateTime())->format('Y-m-d H:i:s');
+      $consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
+    	//$consumreals = Consumreal::all(['date','value'])->;
+      foreach ($consumreals as $consum)    {
+      	array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+      	//$consums[$consum->timestamp]="[".$consum->value."]";
+      };
+      $a['data']=$consums;
+      return Response::json($a);
+});
+Route::get('/consumsrealjson/{offset}', function($offset)
+{
+      $a=array();
+      $consums=array();
+      $a['label']="consums";    
+      $ara=(new DateTime());
+      $from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
+      $to=(new DateTime())->format('Y-m-d H:i:s');
+      $consumreals = Consumreal::whereBetween('date', array($from, $to))->take(10000000)->skip($offset)->get();
+      //$consumreals = Consumreal::all(['date','value'])->;
+      foreach ($consumreals as $consum)    {
+        array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+        //$consums[$consum->timestamp]="[".$consum->value."]";
+      };
+      $a['data']=$consums;
+      return Response::json($a);
+});
+Route::get('/consumsrealjsonlast', function()
+{
+      $a=array();
+      $consums=array();
+      $a['label']="consums";    
+      $ara=(new DateTime());
+      $from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
+      $to=(new DateTime())->format('Y-m-d H:i:s');
+      $consum = Consumreal::whereBetween('date', array($from, $to))->orderBy('date', 'desc')->first();
+      //$consumreals = Consumreal::all(['date','value'])->;
 
-  $consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
+        array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+        //$consums[$consum->timestamp]="[".$consum->value."]";
 
-	//$consumreals = Consumreal::all(['date','value'])->;
-foreach ($consumreals as $consum)    {
-	array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
-	//$consums[$consum->timestamp]="[".$consum->value."]";
-    };
-$a['data']=$consums;
-    /*
-    {
-    "label": "Europe (EU27)",
-    "data": [[1999, 3.0], [2000, 3.9]]
-}
-
-*/
-	return Response::json($a);
+      $a['data']=$consums;
+      return Response::json($a);
 });
