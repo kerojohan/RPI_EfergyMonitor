@@ -12,27 +12,27 @@
 @show</title>
 
 
-	<link href="js/flot/examples/examples.css" rel="stylesheet" type="text/css">
+	<link href="{{ URL::asset('js/flot/examples/examples.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/plugins/metisMenu/metisMenu.min.css')}}" rel="stylesheet">
 
     <!-- Timeline CSS -->
-    <link href="css/plugins/timeline.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/plugins/timeline.css')}}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/plugins/morris.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('font-awesome-4.1.0/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 	
-    <link href="css/energymonitor.css" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('css/energymonitor.css')}}" rel="stylesheet" type="text/css">
 
 
 </head>
@@ -270,7 +270,7 @@
                             <a class="active" href="{{ URL::to('/') }}"><i class="fa fa-dashboard fa-fw"></i> Dades en temps real</a>
                         </li>
                         <li>
-                            <a href="{{ URL::to('history') }}"><i class="fa fa-table fa-fw"></i> Històric</a>
+                            <a href="{{ URL::to('historic') }}"><i class="fa fa-table fa-fw"></i> Històric</a>
                         </li>
                         <li>
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Factures virtuals</a>
@@ -297,20 +297,20 @@
 
 
 
-    <script src="js/jquery.js"></script>
+    <script src="{{ URL::asset('js/jquery.js')}}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="{{ URL::asset('js/bootstrap.min.js')}}"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="{{ URL::asset('js/plugins/metisMenu/metisMenu.min.js')}}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="js/sb-admin-2.js"></script>
+    <script src="{{ URL::asset('js/sb-admin-2.js')}}"></script>
 
-	<script language="javascript" type="text/javascript" src="js/flot/jquery.flot.js"></script>
-	<script language="javascript" type="text/javascript" src="js/flot/jquery.flot.time.js"></script>
-	<script language="javascript" type="text/javascript" src="js/flot/examples/axes-time-zones/date.js"></script>
+	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/jquery.flot.js')}}"></script>
+	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/jquery.flot.time.js')}}"></script>
+	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/examples/axes-time-zones/date.js')}}"></script>
 
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 

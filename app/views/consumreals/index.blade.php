@@ -22,9 +22,9 @@ OpenEnergyMonitor
       <thead>
         <tr>
           <th>ID</th>
-		  <th>date</th>
-		  <th>timestamp</th>
-		  <th>value</th>
+		  <th>dia</th>
+		  <th>consums</th>
+		  <th>pic</th>
         </tr>
       </thead>
       <tbody>
@@ -32,9 +32,9 @@ OpenEnergyMonitor
         <tr>
 
           <td>{{$consum->id}}</td>
-          <td>{{$consum->date}}</td>
-          <td>{{$consum->timestamp}}</td>
-          <td>{{$consum->value}}</td>
+          <td>{{$consum->day}}</td>
+          <td>{{$consum->consum}}</td>
+          <td>{{$consum->pic}}</td>
          
         </tr>
 	@endforeach

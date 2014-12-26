@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class History extends Migration {
+class CreateHistorydaysTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,15 @@ class History extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('historymonth', function(Blueprint $table)
+		Schema::create('historydays', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->date('month');
+			$table->date('day');
 			$table->float('consum');
 			$table->float('pic');
 		});
 	}
+
 
 	/**
 	 * Reverse the migrations.
@@ -28,7 +29,7 @@ class History extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('historydays');
 	}
 
 }

@@ -1,0 +1,1 @@
+/var/www/energymonitor/app/views/historydays/show.blade.php

@@ -105,43 +105,87 @@ class ConsumrealsController extends \BaseController {
 	}
 
 	public static function consumdia($dia,$mes,$any){  
-	  $a=array();
-      $from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
-      $to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
-      $consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
-      $preukwh=0.141019;
-      $preu=0;
-      $cont=0;
-      $anterior=0;
-      $sumatemps=0;
-      foreach ($consumreals as $consum)    {
-        if($cont>0){
-          if($cont<(count($consumreals)-1) ){
-            $tempsfrom=$consum->date;
-          }else{
-            if((strtotime((new DateTime())->format('Y-m-d H:i:s'))-strtotime($tempsfrom))>3600){
-              $tempsfrom=($to->format('Y-m-d H:i:s'));
-            }else{
-              $tempsfrom=$consum->date;
-            }
-          }
-        	$preu=$preu+($preukwh*($consum->value/1000)*((strtotime($tempsfrom)-strtotime($anterior))/3600));
+		$a=array();
+		$from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
+		$to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
+		$consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
+		$preukwh=0.141019;
+		$preu=0;
+		$cont=0;
+		$anterior=0;
+		$sumatemps=0;
+		foreach ($consumreals as $consum)    {
+			if($cont>0){
+				if($cont<(count($consumreals)-1) ){
+					$tempsfrom=$consum->date;
+				}else{
+					if((strtotime((new DateTime())->format('Y-m-d H:i:s'))-strtotime($tempsfrom))>3600){
+						$tempsfrom=($to->format('Y-m-d H:i:s'));
+					}else{
+						$tempsfrom=$consum->date;
+					}
+				}
+				$preu=$preu+($preukwh*($consum->value/1000)*((strtotime($tempsfrom)-strtotime($anterior))/3600));
         //echo $preukwh."*".($consum->value/1000)."*".((strtotime($consum->date)-strtotime($anterior))/3600)."=".($preukwh*($consum->value/1000)*((strtotime($consum->date)-strtotime($anterior))/3600))."<br>";
         //echo $anterior."--".$tempsfrom."-".count($consumreals)."<br>";
-          	$sumatemps=$sumatemps+((strtotime($tempsfrom)-strtotime($anterior)));
-            $anterior=$consum->date;
-        }else{
-          $anterior=$from->format('Y-m-d H:i:s');
-        }
+				$sumatemps=$sumatemps+((strtotime($tempsfrom)-strtotime($anterior)));
+				$anterior=$consum->date;
+			}else{
+				$anterior=$from->format('Y-m-d H:i:s');
+			}
         //$consums[$consum->timestamp]="[".$consum->value."]";
-        $cont++;
-      };
+			$cont++;
+		};
 
-      $pic = Consumreal::whereBetween('date', array($from, $to))->max('value');
-      $a['preu']=$preu;
-      $a['consum']=$preu/$preukwh;
-      $a['pic']=$pic/1000;
-      return $a;
+		$pic = Consumreal::whereBetween('date', array($from, $to))->max('value');
+		$a['preu']=$preu;
+		$a['consum']=$preu/$preukwh;
+		$a['pic']=$pic/1000;
+		return $a;
+	}
+
+	public static function consumdiajson($dia,$mes,$any){  
+		$consums=array();
+		$a=array();
+		$from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
+		$to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
+		$consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
+		$preukwh=0.141019;
+		$preu=0;
+		$cont=0;
+		$anterior=0;
+		$sumatemps=0;
+		foreach ($consumreals as $consum)    {
+			array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+
+			if($cont>0){
+				if($cont<(count($consumreals)-1) ){
+					$tempsfrom=$consum->date;
+				}else{
+					if((strtotime((new DateTime())->format('Y-m-d H:i:s'))-strtotime($tempsfrom))>3600){
+						$tempsfrom=($to->format('Y-m-d H:i:s'));
+					}else{
+						$tempsfrom=$consum->date;
+					}
+				}
+				$preu=$preu+($preukwh*($consum->value/1000)*((strtotime($tempsfrom)-strtotime($anterior))/3600));
+        //echo $preukwh."*".($consum->value/1000)."*".((strtotime($consum->date)-strtotime($anterior))/3600)."=".($preukwh*($consum->value/1000)*((strtotime($consum->date)-strtotime($anterior))/3600))."<br>";
+        //echo $anterior."--".$tempsfrom."-".count($consumreals)."<br>";
+				$sumatemps=$sumatemps+((strtotime($tempsfrom)-strtotime($anterior)));
+				$anterior=$consum->date;
+			}else{
+				$anterior=$from->format('Y-m-d H:i:s');
+			}
+        //$consums[$consum->timestamp]="[".$consum->value."]";
+			$cont++;
+		};
+
+		$pic = Consumreal::whereBetween('date', array($from, $to))->max('value');
+      //$a['preu']=$preu;
+		$a['consum']=$preu/$preukwh;
+		$a['pic']=$pic/1000;
+		$a['data']=$consums;
+		return json_encode($a);
 	}
 
 }
