@@ -32,12 +32,12 @@ OpenEnergyMonitor
     <div class="col-lg-12">
     <div class="btn-toolbar" role="toolbar" id="timesel">
           <div class="btn-group">
-            <a type="button" class="btn btn-default" aria-label="Left Align"><strong>Mes actual</strong></a>
+            <a type="button" class="btn btn-default" aria-label="Left Align" href="{{URL::to('/historic')}}"><strong>Mes actual</strong></a>
             @if($dades['mesanterior']!=null)   
-            <a type="button" class="btn btn-default" aria-label="Center Align" href="{{'/energymonitor/public/historic/'.$dades['mesanterior']}}"><strong>Mes anterior</strong></a>
+            <a type="button" class="btn btn-default" aria-label="Center Align" href="{{URL::to('/historic/'.$dades['mesanterior'])}}"><strong>Mes anterior</strong></a>
             @endif
             @if($dades['mesposterior']!=null) 
-            <a type="button" class="btn btn-default" aria-label="Right Align" href="{{'/energymonitor/public/historic/'.$dades['mesposterior']}}"><strong>Mes posterior</strong></a>
+            <a type="button" class="btn btn-default" aria-label="Right Align" href="{{URL::to('/historic/'.$dades['mesposterior'])}}"><strong>Mes posterior</strong></a>
             @endif
             <a type="button" class="btn btn-default" aria-label="Justify"><strong>Últims 12 mesos</strong></a>
         </div>
