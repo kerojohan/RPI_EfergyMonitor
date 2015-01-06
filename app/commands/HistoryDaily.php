@@ -41,8 +41,8 @@ class HistoryDaily extends Command {
 		    $ahir = date('Y-m-d',strtotime("-1 days"));
 		$this->info('Busco dies');
   					$dies = DB::table('consumreals')
-                    ->select(DB::raw('distinct(DATE_FORMAT(date, "%Y-%c-%d")) as day'))
-                    ->whereRaw(DB::raw('(DATE_FORMAT(date, "%Y-%c-%d") not in (select day from historydays)) AND (DATE_FORMAT(date, "%Y-%c-%d")!="'.$avui.'" )'))
+                    ->select(DB::raw('distinct(DATE_FORMAT(date, "%Y-%m-%d")) as day'))
+                    ->whereRaw(DB::raw('(DATE_FORMAT(date, "%Y-%m-%d") not in (select day from historydays)) AND (DATE_FORMAT(date, "%Y-%c-%d")!="'.$avui.'" )'))
                     ->groupby('day') 
                     ->get();
               //      $queries = DB::getQueryLog();
@@ -61,13 +61,11 @@ class HistoryDaily extends Command {
 	      //print_r($obj);
 	      //Usage
 			File::put('public/history/'.$daily->day.'.json',ConsumrealsController::consumdiajson($dia,$mes,$any));
-			if($daily->day != $ahir)
-			{
-				  	DB::table('consumreals')
-                    ->whereRaw(DB::raw('date like "'.$daily->day.'%"'))
-                    ->delete();
-			}
       }
+      				
+				  	DB::table('consumreals')
+                    ->whereRaw(DB::raw('date not like "'.$ahir.'%" and date not like "'.$avui.'%"'))
+                    ->delete();
 
 		//$a=ConsumrealsController::consumdia($dia,$mes,$any)
 

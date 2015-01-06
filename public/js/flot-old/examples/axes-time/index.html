@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Examples: Time Axes</title>
+	<link href="../examples.css" rel="stylesheet" type="text/css">
+	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<script language="javascript" type="text/javascript" src="../../jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="../../jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="../../jquery.flot.time.js"></script>
+	<script type="text/javascript">
+
+function fetchData(){
+	//console.log("fetchData");
+			var d = []; 
+$.getJSON('http://192.168.0.11/energymonitor/public/consumsrealjson', function(response) {
+d=response.data;
+//console.log(d);
+		$.plot("#placeholder", [d], {
+				xaxis: {
+						mode: 'time',
+						//timeformat: "%h%p",
+						color: '#717073',
+						min: (new Date()).getTime()-86400000,
+						max: (new Date()).getTime()
+					},
+					yaxis: {
+						label: 'kW',
+						ticks: 10,
+						min: 0,
+						color: '#717073'
+					},
+					grid: {
+						borderWidth: 2,
+						borderColor: '#717073',
+						color: '#c9cbcc',
+						backgroundColor: { colors: ["#f7f5f2", "#f7f5f2"] },
+						clickable: true,
+				    hoverable: true
+					},
+					legend : {
+						show: true
+					}
+		});
+
+});
+//setTimeout(fetchData, 10000);
+}
+
+function formatDate(d) {
+
+
+  var ss = d.getSeconds()
+  if ( ss < 10 ) ss = '0' + ss
+  
+  var hh = d.getHours()
+  if ( hh < 10 ) hh = '0' + hh
+  
+  var min = d.getMinutes()
+  if ( min < 10 ) min = '0' + min
+
+  return hh+':'+min+':'+ss;
+}
+
+	$(function() {
+
+$("<div id='tooltip'></div>").css({
+			position: "absolute",
+			display: "none",
+			border: "1px solid #fdd",
+			padding: "2px",
+			"background-color": "#fee",
+			opacity: 0.80
+		}).appendTo("body");
+
+		$("#placeholder").bind("plothover", function (event, pos, item) {
+
+	
+				var str = "(" + pos.x.toFixed(2) + ", " + (pos.y.toFixed(2))/1000 + "KWh)";
+
+		
+				if (item) {
+					var x = formatDate((new Date((item.datapoint[0])))),
+						y = item.datapoint[1].toFixed(2)/1000+"KWh";
+
+					$("#tooltip").html(x + "<br>" + y)
+						.css({top: item.pageY+5, left: item.pageX+5})
+						.fadeIn(200);
+				} else {
+					$("#tooltip").hide();
+				}
+			
+		});
+
+
+fetchData();
+
+
+
+
+		
+		});
+
+
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Time Axes</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+		</div>
+
+		<p>Monthly mean atmospheric CO<sub>2</sub> in PPM at Mauna Loa, Hawaii (source: <a href="http://www.esrl.noaa.gov/gmd/ccgg/trends/">NOAA/ESRL</a>).</p>
+
+		<p>If you tell Flot that an axis represents time, the data will be interpreted as timestamps and the ticks adjusted and formatted accordingly.</p>
+
+		<p>Zoom to: <button id="whole">Whole period</button>
+		<button id="nineties">1990-2000</button>
+		<button id="latenineties">1996-2000</button></p>
+
+		<p>Zoom to: <button id="ninetyninequarters">1999 by quarter</button>
+		<button id="ninetynine">1999 by month</button>
+		<button id="lastweekninetynine">Last week of 1999</button>
+		<button id="lastdayninetynine">Dec. 31, 1999</button></p>
+
+		<p>The timestamps must be specified as Javascript timestamps, as milliseconds since January 1, 1970 00:00. This is like Unix timestamps, but in milliseconds instead of seconds (remember to multiply with 1000!).</p>
+
+		<p>As an extra caveat, the timestamps are interpreted according to UTC and, by default, displayed as such. You can set the axis "timezone" option to "browser" to display the timestamps in the user's timezone, or, if you use timezoneJS, you can specify a time zone.</p>
+
+	</div>
+
+	<div id="footer">
+		Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
+	</div>
+
+</body>
+</html>

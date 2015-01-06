@@ -48,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">OpenEnergyMonitor</a>
+                <a class="navbar-brand" href="index.html">EnergyMonitor</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -310,10 +310,12 @@
 
 	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/jquery.flot.js')}}"></script>
 	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/jquery.flot.time.js')}}"></script>
+    <script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/jquery.flot.spline.js')}}"></script>
 	<script language="javascript" type="text/javascript" src="{{ URL::asset('js/flot/examples/axes-time-zones/date.js')}}"></script>
 
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
+<script src="{{ URL::asset('js/highcharts/js/highcharts.js')}}"></script>
+<script src="{{ URL::asset('js/highcharts/modules/js/exporting.js')}}"></script>
 
 	@yield('javascript')
 

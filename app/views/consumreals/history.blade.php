@@ -13,11 +13,19 @@ OpenEnergyMonitor
  @endif
  <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Històric ({{$dia}}) <button onclick="javascript:window.location.href='javascript:history.back()'" type="button" class="btn btn-primary pull-right" > Tornar</button></h1>
+        <h1 class="page-header">Històric ({{$dades['dia']}}) <button onclick="javascript:window.location.href='javascript:history.back()'" type="button" class="btn btn-primary pull-right" > Tornar</button></h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel-body grafica-container">
 
+            <div id="placeholder" class="demo-placeholder"><img style="top:50%;position:relative;left:50%" src="{{asset('img/ajax-loader.gif')}}"></div>
+
+        </div>
+    </div>
+</div>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-4 col-md-6">
@@ -28,7 +36,7 @@ OpenEnergyMonitor
                         <i class="fa fa-money fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="actualpreu">{{round($preu,2)}}</div>
+                        <div class="huge" id="actualpreu">{{round($dades['preu'],2)}}</div>
                         <div>€</div>
                     </div>
                 </div>
@@ -50,7 +58,7 @@ OpenEnergyMonitor
                         <i class="fa fa-bar-chart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="consumdia">{{round($consum,2)}}</div>
+                        <div class="huge" id="consumdia">{{round($dades['consum'],2)}}</div>
                         <div>kW</div>
                     </div>
                 </div>
@@ -72,7 +80,7 @@ OpenEnergyMonitor
                     <i class="fa fa-line-chart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="pic">{{round($pic,3)}}</div>
+                        <div class="huge" id="pic">{{round($dades['pic'],3)}}</div>
                         <div>kWh</div>
                     </div>
                 </div>
@@ -88,24 +96,20 @@ OpenEnergyMonitor
     </div>
 </div>
 <!-- /.row -->
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-bar-chart-o fa-fw"></i> Gràfica dia
             </div>
-            <!-- /.panel-heading -->
             <div class="panel-body grafica-container">
                 <div id="placeholder" class="demo-placeholder"></div>
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
     </div>
 
-    <!-- /.col-lg-4 -->
 </div>
-<!-- /.row -->
+ -->
 
 
 
@@ -130,7 +134,7 @@ OpenEnergyMonitor
         timezoneJS.timezone.zoneFileBasePath = "{{  URL::asset('js/flot/examples/axes-time-zones/tz')}}";
         timezoneJS.timezone.defaultZoneFile = [];
         timezoneJS.timezone.init({async: false});
-        var data=new Date('{{$dia}} 00:00:00');
+        var data=new Date('{{$dades["dia"]}} 00:00:00');
                 var dataplot=[];
                 var optionsplot ={
                     xaxis: {
@@ -145,13 +149,14 @@ OpenEnergyMonitor
                         label: 'kW',
                         ticks: 10,
                         min: 0,
-                        color: '#717073'
+                        color: 'rgb(192, 192, 192)',
+                        axisMargin: 10,
+                        autoscaleMargin: 0.05
                     },
                     grid: {
                         borderWidth: 2,
-                        borderColor: '#717073',
-                        color: '#c9cbcc',
-                        backgroundColor: { colors: ["#f7f5f2", "#f7f5f2"] },
+                        borderColor: 'rgb(192, 192, 192)',
+                        //backgroundColor: { colors: ["#f7f5f2", "#f7f5f2"] },
                         clickable: true,
                         hoverable: true
                     },
@@ -181,7 +186,7 @@ OpenEnergyMonitor
                     }   
                 });
 
-                $.plot("#placeholder", [{{$data}}], optionsplot);
+                $.plot("#placeholder", [{{$dades['data']}}], optionsplot);
           
 
             });

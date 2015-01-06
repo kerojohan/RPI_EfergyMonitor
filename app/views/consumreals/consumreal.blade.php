@@ -17,6 +17,15 @@ OpenEnergyMonitor
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel-body grafica-container">
+
+            <div id="placeholder" class="demo-placeholder"><img style="top:50%;position:relative;left:50%" src="{{asset('img/ajax-loader.gif')}}"></div>
+
+        </div>
+    </div>
+</div>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-3 col-md-6">
@@ -27,7 +36,7 @@ OpenEnergyMonitor
                         <i class="fa fa-dashboard fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="actualconsum">0</div>
+                        <div class="huge" id="actualconsum"><img  class="loading" src="{{asset('img/ajax-loader2.gif')}}">{{--round($dades['ultim'],2)--}} &nbsp;</div>
                         <div>kWh</div>
                     </div>
                 </div>
@@ -49,7 +58,7 @@ OpenEnergyMonitor
                         <i class="fa fa-money fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="actualpreu">0</div>
+                        <div class="huge" id="actualpreu"><img  class="loading2" src="{{asset('img/ajax-loader2.gif')}}">{{--round($dades['preu'],2)--}} &nbsp;</div>
                         <div>€</div>
                     </div>
                 </div>
@@ -71,7 +80,7 @@ OpenEnergyMonitor
                         <i class="fa fa-bar-chart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="consumdia">0</div>
+                        <div class="huge" id="consumdia"><img  class="loading2" src="{{asset('img/ajax-loader2.gif')}}">{{--round($dades['consum'],2)--}} &nbsp;</div>
                         <div>kW</div>
                     </div>
                 </div>
@@ -90,10 +99,10 @@ OpenEnergyMonitor
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                    <i class="fa fa-line-chart fa-5x"></i>
+                        <i class="fa fa-line-chart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="pic">0</div>
+                        <div class="huge" id="pic"><img  class="loading2" src="{{asset('img/ajax-loader2.gif')}}">{{--round($dades['pic'],2)--}} &nbsp;</div>
                         <div>kWh</div>
                     </div>
                 </div>
@@ -109,25 +118,24 @@ OpenEnergyMonitor
     </div>
 </div>
 <!-- /.row -->
-<div class="row">
+<!--<div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-bar-chart-o fa-fw"></i> Gràfica del consum en temps real (últimes 24 hores)
             </div>
-            <!-- /.panel-heading -->
             <div class="panel-body grafica-container">
-                <div id="placeholder" class="demo-placeholder"></div>
+
+                <div id="placeholder" class="demo-placeholder"><img style="top:50%;position:relative;left:50%" src="{{asset('img/ajax-loader.gif')}}"></div>
 
             </div>
-            <!-- /.panel-body -->
+       
         </div>
-        <!-- /.panel -->
+
     </div>
 
-    <!-- /.col-lg-4 -->
 </div>
-<!-- /.row -->
+ -->
 
 
 
@@ -151,13 +159,14 @@ OpenEnergyMonitor
                         label: 'kW',
                         ticks: 10,
                         min: 0,
-                        color: '#717073'
+                        color: 'rgb(192, 192, 192)',
+                        axisMargin: 10,
+                        autoscaleMargin: 0.05
                     },
                     grid: {
                         borderWidth: 2,
-                        borderColor: '#717073',
-                        color: '#c9cbcc',
-                        backgroundColor: { colors: ["#f7f5f2", "#f7f5f2"] },
+                        borderColor: 'rgb(192, 192, 192)',
+                        //backgroundColor: { colors: ["#f7f5f2", "#f7f5f2"] },
                         clickable: true,
                         hoverable: true
                     },
@@ -168,13 +177,13 @@ OpenEnergyMonitor
 
                 function preudiari(){
                     var date=new Date();
-                    $.getJSON('/energymonitor/public/consumsrealsdiajson/'+date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(), function(response) {
+                    $.getJSON('/energymonitor/public/json/consumsrealsdia/'+date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(), function(response) {
                         preu=response.preu;
                         consumdia=response.consum;
                         pic=response.pic;
 
                         if (pic>maxpic) maxpic =pic;
-
+                        $('.loading2').hide();
                         $('#actualpreu').text(preu.toFixed(2));
                         $('#consumdia').text(consumdia.toFixed(2));
                         $('#pic').text(maxpic.toFixed(2));
@@ -187,16 +196,18 @@ OpenEnergyMonitor
     //console.log("fetchData");
     var d = []; 
 
-    $.getJSON('/energymonitor/public/consumsrealjsonlast', function(response) {
+    $.getJSON('/energymonitor/public/json/consumsreallast', function(response) {
         d=response.data;
 
         if(d.length >0){
             dataplot=dataplot.concat([[((new Date()).getTime()),(d[d.length-1][1])]]);
             consumactual=(d[d.length-1][1])/1000;
+            $('.loading').hide();
             $('#actualconsum').text(consumactual);
             if (consumactual>maxpic && maxpic >0) 
             {
                 maxpic =consumactual;
+                $('.loading2').hide();
                 $('#pic').text(maxpic.toFixed(2));
             }
             optionsplot.xaxis.min= (new Date()).getTime()-86400000,
@@ -248,7 +259,7 @@ $(function() {
             $("#tooltip").hide();
         }   
     });
-    $.getJSON('/energymonitor/public/consumsrealjson', function(response) {
+    $.getJSON('/energymonitor/public/json/consumsreal', function(response) {
         dataplot=response.data;
                 //console.log(d);
                 $.plot("#placeholder", [dataplot], optionsplot);

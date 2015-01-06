@@ -59,7 +59,7 @@
 
 		function preudiari(data){
 			var date=data;
-			$.getJSON('/energymonitor/public/consumsrealsdiajson/'+date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(), function(response) {
+			$.getJSON('/energymonitor/public/json/consumsrealsdia/'+date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(), function(response) {
 				preu=response.preu;
 				consumdia=response.consum;
 				$('#actualpreu').text(preu.toFixed(2)+"€");
@@ -140,7 +140,7 @@
 						$("#tooltip").hide();
 					}	
 				});
-				$.getJSON('/energymonitor/public/consumdiajson/'+data.getDate()+'/'+(data.getMonth()+1)+'/'+data.getFullYear(), function(response) {
+				$.getJSON('/energymonitor/public/json/consumdia/'+data.getDate()+'/'+(data.getMonth()+1)+'/'+data.getFullYear(), function(response) {
 					dataplot=response.data;
 				//console.log(d);
 				$.plot("#placeholder", [dataplot], optionsplot);

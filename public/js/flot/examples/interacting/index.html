@@ -51,11 +51,11 @@
 		}).appendTo("body");
 
 		$("#placeholder").bind("plothover", function (event, pos, item) {
-console.log(pos);
-			
+
+			if ($("#enablePosition:checked").length > 0) {
 				var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
-				$("#hoverdata").text("fsd"+str);
-		
+				$("#hoverdata").text(str);
+			}
 
 			if ($("#enableTooltip:checked").length > 0) {
 				if (item) {
@@ -111,7 +111,7 @@ console.log(pos);
 	</div>
 
 	<div id="footer">
-		Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
+		Copyright &copy; 2007 - 2013 IOLA and Ole Laursen
 	</div>
 
 </body>
