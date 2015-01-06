@@ -19,7 +19,7 @@ OpenEnergyMonitor
         -->
 
 
-        <h1 class="page-header">Històric ({{date("M Y",strtotime($dades['mes']."-01"))}})</h1>
+        <h1 class="page-header">Històric</h1>
  
       <!--  <ul class="pagination pull-right">
             <li><a href="#"><span aria-hidden="true">&laquo; Mes anterior</span><span class="sr-only">Previous</span></a></li>
@@ -30,32 +30,29 @@ OpenEnergyMonitor
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div class="timesel">
-            <ul class="top">
-                <li  class="selected">
-                    <a href="/app/reports/overview?months=0"><strong>Mes actual</strong></a>
-                </li>
-                          @if($dades['mesanterior']!=null)   
-                <li>
-                <a   href="{{'/energymonitor/public/historic/'.$dades['mesanterior']}}"><strong>Mes anterior</strong></a>
-                </li>
-                @endif
-
-      @if($dades['mesposterior']!=null) 
-                <li>
-                    <a    href="{{'/energymonitor/public/historic/'.$dades['mesposterior']}}"><strong>Mes posterior</strong></a>
-                </li>
-                @endif  
-                <li>
-                    <a href="/app/reports/overview?months=12"><strong>Últims 12 mesos</strong></a>
-                </li>
-
-            </ul>
+    <div class="btn-toolbar" role="toolbar" id="timesel">
+          <div class="btn-group">
+            <a type="button" class="btn btn-default" aria-label="Left Align"><strong>Mes actual</strong></a>
+            @if($dades['mesanterior']!=null)   
+            <a type="button" class="btn btn-default" aria-label="Center Align" href="{{'/energymonitor/public/historic/'.$dades['mesanterior']}}"><strong>Mes anterior</strong></a>
+            @endif
+            @if($dades['mesposterior']!=null) 
+            <a type="button" class="btn btn-default" aria-label="Right Align" href="{{'/energymonitor/public/historic/'.$dades['mesposterior']}}"><strong>Mes posterior</strong></a>
+            @endif
+            <a type="button" class="btn btn-default" aria-label="Justify"><strong>Últims 12 mesos</strong></a>
         </div>
-        <!--           <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
-        <div id="placeholder" style="min-width: 310px; height: 300px; margin: 0 auto; margin-bottom: 25px;" ></div>
-        <div id="chartLegend"></div>
     </div>
+    </div>
+</div>
+
+    <div class="row">
+    <div class="col-lg-12">
+    <!--           <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
+    <div id="title" style=" clear: both;
+    text-align: center; margin-top:20px"><strong>{{date("M Y",strtotime($dades['mes']."-01"))}}</strong></div>
+    <div id="placeholder" style="min-width: 310px; height: 300px; margin: 0 auto; margin-bottom: 25px;" ></div>
+    <div id="chartLegend"></div>
+</div>
 </div>
 
 
