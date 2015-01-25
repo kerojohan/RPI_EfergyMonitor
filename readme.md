@@ -1,25 +1,40 @@
-## Laravel PHP Framework
+## RPI_EfergyMonitor
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+UNDER DEVELOPMENT
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+Just using your original Efergy product and a Raspberry Pi you will be able to monitor your consumption, have statistics and know how much kWh did you waste.
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+Checked in a Raspberry Pi.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+![Real Time Consumption](https://github.com/kerojohan/screenshots/realtimeconsumption.png)
 
-## Official Documentation
+Requeriments:
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
+Just to get Laravel working:
+Apache 
+Php5
+Mysql
 
-### Contributing To Laravel
+To take data:
+Download my fork [RPI_Efergy](https://github.com/kerojohan/RPI_Efergy), that will store some data directly into your Mysql.
 
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
+How to start capturing data?
+
+modprobe -r dvb_usb_rtl28xxu;
+rtl_fm -f 433.54e6 -s 200000 -r 96000 -A fast 2>/dev/null | /home/pi/scripts/RPI
+_Efergy/EfergyRPI_mysql;
+
+note that 433.54e6? thats my best freq, you will have another, check the RPI_Efergy readme to know it.
+
+
+more screenshots
+
+![Statistics](https://github.com/kerojohan/screenshots/statistics.png)
+
+![Hisitoric Data](https://github.com/kerojohan/screenshots/historicdata.png)
 
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+Almost done but I need help to finnish it, by the moment only in catalan and prices of kWh are hardcoded, planninng to do virtual bills and of course the configuration area where to put or choose a price according your energy provider
