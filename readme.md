@@ -6,7 +6,7 @@ Just using your original Efergy product and a Raspberry Pi you will be able to m
 
 Checked in a Raspberry Pi.
 
-![Real Time Consumption](https://github.com/kerojohan/screenshots/realtimeconsumption.png)
+![Real Time Consumption](https://github.com/kerojohan/RPI_EfergyMonitor/blob/master/screenshots/realtimeconsumption.png)
 
 Requeriments:
 
@@ -29,9 +29,9 @@ note that 433.54e6? thats my best freq, you will have another, check the RPI_Efe
 
 more screenshots
 
-![Statistics](https://github.com/kerojohan/screenshots/statistics.png)
+![Statistics](https://github.com/kerojohan/RPI_EfergyMonitor/blob/master/screenshots/statistics.png)
 
-![Hisitoric Data](https://github.com/kerojohan/screenshots/historicdata.png)
+![Historic Data](https://github.com/kerojohan/RPI_EfergyMonitor/blob/master/screenshots/historicdata.png)
 
 ### License
 
