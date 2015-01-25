@@ -28,21 +28,17 @@ OpenEnergyMonitor
     </div>
     <!-- /.col-lg-12 -->
 </div>
-
 <div class="row">
     <div class="col-lg-12">
     <div class="btn-toolbar" role="toolbar" id="timesel">
           <div class="btn-group">
-          <!-- @if($dades['mesposterior']!=null) 
-            <a type="button" class="btn btn-default" aria-label="Left Align" href="{{URL::to('/historic')}}"><strong>Mes actual</strong></a>
-            @endif-->
-            @if($dades['mesanterior']!=null)   
-            <a type="button" class="btn btn-default" aria-label="Center Align" href="{{URL::to('/historic/mes/'.$dades['mesanterior'])}}"><strong>Mes anterior</strong></a>
+            @if($dades['anyanterior']!=null)   
+            <a type="button" class="btn btn-default" aria-label="Center Align" href="{{URL::to('/historic/any/'.$dades['anyanterior'])}}"><strong>{{$dades['anyanterior']}}</strong></a>
             @endif
-            @if($dades['mesposterior']!=null) 
-            <a type="button" class="btn btn-default" aria-label="Right Align" href="{{URL::to('/historic/mes/'.$dades['mesposterior'])}}"><strong>Mes posterior</strong></a>
+            @if($dades['anyposterior']!=null) 
+            <a type="button" class="btn btn-default" aria-label="Right Align" href="{{URL::to('/historic/any/'.$dades['anyposterior'])}}"><strong>{{$dades['anyposterior']}}</strong></a>
             @endif
-            <a type="button" class="btn btn-default" aria-label="Justify" href="{{URL::to('/historic/any/'.$dades['anyactual'])}}"><strong>{{$dades['anyactual']}}</strong></a>
+            <a type="button" class="btn btn-default" aria-label="Justify" href="{{URL::to('/historic/12months')}}"><strong>Últims 12 mesos</strong></a>
         </div>
     </div>
     </div>
@@ -52,7 +48,7 @@ OpenEnergyMonitor
     <div class="col-lg-12">
     <!--           <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
     <div id="title" style=" clear: both;
-    text-align: center; margin-top:20px"><strong>{{date("M Y",strtotime($dades['mes']."-01"))}}</strong></div>
+    text-align: center; margin-top:20px"><strong>12 últims mesos</strong></div>
     <div id="placeholder" style="min-width: 310px; height: 300px; margin: 0 auto; margin-bottom: 25px;" ></div>
     <div id="chartLegend"></div>
 </div>
@@ -142,14 +138,14 @@ OpenEnergyMonitor
       <tbody>
           @foreach($dades['consumreals'] as $key =>$consum)
           <tr>
-              <td><a href="{{ URL::to('historic/dia/'.$consum->day) }}">{{$consum->day}}</a></td>
+              <td><a href="{{ URL::to('historic/dia/'. date('Y-m',strtotime($consum->month))) }}">{{date('Y-m',strtotime($consum->month))}}</a></td>
               <td>{{$consum->consum}} kW</td>
               <td>{{$consum->pic}} KWh</td>
           </tr>
           @endforeach
-          @if(isset($dades['avui']['dia']))
+                   @if(isset($dades['avui']['mes']))
             <tr>
-              <td><a href="{{ URL::to('/')}}">{{$dades['avui']['dia']}}</a></td>
+              <td><a href="{{ URL::to('/')}}">{{date('Y-m',$dades['avui']['mes']/1000)}}</a></td>
               <td>{{round($dades['avui']['consum']/1000,2)}} kW</td>
               <td>{{round($dades['avui']['pic'],2)}} kWh</td>
           </tr>
@@ -164,23 +160,20 @@ OpenEnergyMonitor
 @section('javascript')
 <script type="text/javascript">
     function formatDate(d) {
-        var ss = d.getDate()
-        if ( ss < 10 ) ss = '0' + ss
-
             var hh = d.getMonth() +1;
         if ( hh < 10 ) hh = '0' + hh
 
             var min = d.getFullYear();
 
-        return min+'-'+hh+'-'+ss;
+        return min+'-'+hh;
     }
 
     $(function() {
         timezoneJS.timezone.zoneFileBasePath = "{{  URL::asset('js/flot/examples/axes-time-zones/tz')}}";
         timezoneJS.timezone.defaultZoneFile = [];
         timezoneJS.timezone.init({async: false});
-        var data=new Date('{{$dades["mes"]}}-01 00:00:00');
-        var data2 = new Date(new Date(data).setMonth(data.getMonth()+1));
+        var data2=new Date();
+        var data = new Date(new Date(data2).setMonth(data2.getMonth()-12));
                // data2.setDate(data2.getDate()-1);
                var dataplot=[];
                var optionsplot ={
@@ -241,10 +234,9 @@ OpenEnergyMonitor
 
                 $("#placeholder").bind("plotclick", function (event, pos, item) {
                   if (item) {
-                   window.location.href = "/energymonitor/public/historic/dia/"+formatDate((new Date((item.datapoint[0]))));
+                   window.location.href = "/energymonitor/public/historic/mes/"+formatDate((new Date((item.datapoint[0]))));
                }
            });
-
                 $.plot("#placeholder", [ {
                     label:"Consum",
                     data: {{$dades['data']}},
@@ -252,22 +244,22 @@ OpenEnergyMonitor
                     stack: 1,
                     bars: {
                         show: true,
-                        barWidth: 1000 * 60 * 60 * 24 *0.8,
-                        align: "left",
+                        barWidth: 1000 * 60 * 60 * 24 *29*0.8,
+                        align: "center",
                         fill:1
                     }
 
                 },{
-                    data:[[{{$dades['avui']['day']}},{{$dades['avui']['consum']}}]],
+                    data:[[{{$dades['avui']['mes']}},{{$dades['avui']['consum']}}]],
                     stack: 1,
                     color:'rgb(218, 233, 244)',
                     bars: {
                         show: true,
-                        barWidth: 1000 * 60 * 60 * 24 *0.8,
-                        align: "left",
+                        barWidth: 1000 * 60 * 60 * 24 *29 *0.8,
+                        align: "center",
                         fill:1,
                     },
-                    clickable: false,
+                    clickable: true,
 
                 },{
                     color:'rgb(217, 83, 79)',
@@ -291,82 +283,5 @@ OpenEnergyMonitor
 
 
 });
-</script>
-
-<script type="text/javascript">
- /*   $(function () {
-        var data=new Date('{{$dades["mes"]}}-01 00:00:00');
-        var data2 = new Date(new Date(data).setMonth(data.getMonth()+1));
-        $('#container').highcharts({
-
-            title: {
-                text: 'Consum {{date("M Y",strtotime($dades["mes"]."-01"))}}'
-            },
-         xAxis: [{ // master axis
-            type: 'datetime',
-            tickInterval:24*3600*1000*5,
-            min: data.getTime(),
-            max: data2.getTime(),
-            startOnTick: true,
-            endtOnTick: true,
-
-        }, { // slave axis
-            type: 'datetime',
-            linkedTo: 0,
-            opposite: true,
-            labels: {
-                formatter: function () {
-                    return Highcharts.dateFormat('%a', this.value);
-                }  }
-            }],
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'W'
-                }
-            },
-            tooltip: {
-           formatter: function() {
-            var data= formatDate(new Date(this.x));
-            return '<table><tr><td >'+data+'<br></td><td style="color:{series.color};padding:0">'+this.series.options.alter+': </td><td style="padding:0"><b>' + this.y + ' '+this.series.options.meter+'</b></td></tr></table>';
-        }
-    },
-    plotOptions: {
-        series: {
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function () {
-                          if ({{($dades['data'])}}.length != (this.index+1))
-                            window.location.href = "/energymonitor/public/historic/dia/"+formatDate((new Date((this.x))));
-                        }
-                    }
-                }
-            },
-        column: {
-            pointPadding: -0.2,
-            borderWidth: 0,
-        },
-        spline:{
-            color:"rgb(217, 83, 79)",
-        }
-    },
-    series: [{
-        name: 'Consum',
-        type: 'column',
-        data: {{$dades['data']}},
-        alter: 'Consum',
-        meter: 'W'
-
-    },
-    {
-        name: 'Màxima petició de consum (pic)',
-        type: 'spline',
-        data: {{$dades['pics']}},
-        alter: 'Pic',
-        meter: 'Wh'
-    } ],
-});
-});*/
 </script>
 @stop

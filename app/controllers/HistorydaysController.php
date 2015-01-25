@@ -143,6 +143,7 @@ class HistorydaysController extends \BaseController {
 			$avui['dia']=$avuidata;
 			$consumtotal=$consumtotal+($avui['consum']/1000);
 			if($pic==0) $pic=$avui['pic'];
+			if($avui['pic']>$pic)$pic=$avui['pic'];
 			$avui['day']= strtotime((new DateTime())->format('Y-m-d'))*1000;
 			array_push($consums, (object) array('x' => $avui['day'],'y'=>(int)$avui['consum'],'color'=>'rgb(218, 233, 244)'));
 		//	array_push($pics, [$avui['day']+36000000,$avui['pic']*1000]);
@@ -164,6 +165,7 @@ class HistorydaysController extends \BaseController {
 		$mesanterior= (new DateTime($mes))->sub(new DateInterval('P1M'));
 		$a['mesposterior']=null;
 		$a['mesanterior']=null;
+		$a['anyactual']=(new DateTime($mes))->format('Y');;
 		if($mesposterior<=(new DateTime()))
 		{
 			$a['mesposterior']=$mesposterior->format('Y-m');

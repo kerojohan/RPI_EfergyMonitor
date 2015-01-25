@@ -39,18 +39,33 @@ Route::get('/consumdia/{dia}/{mes}/{any}', function($dia,$mes,$any)
 
 Route::group(array('prefix' => 'historic'), function()
 {
-  Route::get('/dia/{data?}', function($date = null)
-  {
-    $dades=HistorydaysController::getdaydata($date);
-    return View::make('consumreals.history')->with(compact('dades'));
-  });
+      Route::get('/', function($date = null)
+        {
+          return Redirect::to('historic/mes');
+        });
+      Route::get('/dia/{data?}', function($date = null)
+      {
+        $dades=HistorydaysController::getdaydata($date);
+        return View::make('consumreals.history')->with(compact('dades'));
+      });
 
-  Route::get('/{mes?}', function($date=null)
-  {
-    $dades=HistorydaysController::historicmes($date); 
-    return View::make('consumreals.historymes')->with(compact('dades'));
-  });
+      Route::get('/mes/{mes?}', function($date=null)
+      {
+        $dades=HistorydaysController::historicmes($date); 
+        return View::make('consumreals.historymes')->with(compact('dades'));
+      });
 
+      Route::get('/12months', function()
+      {
+        $dades=HistorymonthsController::historic12(); 
+        return View::make('consumreals.history12')->with(compact('dades'));
+      });
+
+      Route::get('/any/{any?}', function($date=null)
+      {
+        $dades=HistorymonthsController::historicany($date); 
+        return View::make('consumreals.historyany')->with(compact('dades'));
+      });
 });
 
 /*
@@ -58,23 +73,23 @@ Route::group(array('prefix' => 'historic'), function()
 */
 Route::group(array('prefix' => 'json'), function()
 {
-  Route::get('/consumsreallast', function()
-  {
-    $dades=ConsumrealsController::consumsreallast(); 
-    return Response::json($dades);
-  });
+      Route::get('/consumsreallast', function()
+      {
+        $dades=ConsumrealsController::consumsreallast(); 
+        return Response::json($dades);
+      });
 
-  Route::get('/consumsrealsdia/{dia}/{mes}/{any}', function($dia,$mes,$any)
-  {
-    $dades=ConsumrealsController::consumdia($dia,$mes,$any); 
-    return Response::json($dades);
-  });
+      Route::get('/consumsrealsdia/{dia}/{mes}/{any}', function($dia,$mes,$any)
+      {
+        $dades=ConsumrealsController::consumdia($dia,$mes,$any); 
+        return Response::json($dades);
+      });
 
-  Route::get('/consumsreal', function()
-  {
-   $dades=ConsumrealsController::consumsreal();
-   return Response::json($dades);
- });
+      Route::get('/consumsreal', function()
+      {
+       $dades=ConsumrealsController::consumsreal();
+       return Response::json($dades);
+     });
 });
 
 

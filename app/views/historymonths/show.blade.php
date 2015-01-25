@@ -1,0 +1,1 @@
+/var/www/energymonitor/app/views/historymonths/show.blade.php

@@ -48,9 +48,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">EnergyMonitor</a>
+                <a class="navbar-brand" href="index.html">RPI_EfergyMonitor</a>
             </div>
-            <!-- /.navbar-header -->
+            <!-- /.navbar-header 
 
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
@@ -101,9 +101,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-messages -->
+     
                 </li>
-                <!-- /.dropdown -->
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -180,9 +180,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-tasks -->
+          
                 </li>
-                <!-- /.dropdown -->
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -240,9 +240,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-alerts -->
+       
                 </li>
-                <!-- /.dropdown -->
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -256,11 +256,11 @@
                         <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-user -->
+    
                 </li>
-                <!-- /.dropdown -->
+
             </ul>
-            <!-- /.navbar-top-links -->
+-->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -270,14 +270,14 @@
                             <a class="active" href="{{ URL::to('/') }}"><i class="fa fa-dashboard fa-fw"></i> Dades en temps real</a>
                         </li>
                         <li>
-                            <a href="{{ URL::to('historic') }}"><i class="fa fa-table fa-fw"></i> Històric</a>
+                            <a href="{{ URL::to('historic/mes') }}"><i class="fa fa-table fa-fw"></i> Històric</a>
                         </li>
-                        <li>
+                      <!--  <li>
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Factures virtuals</a>
                         </li>
                         <li>
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Configura</a>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -315,7 +315,6 @@
 
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="{{ URL::asset('js/highcharts/js/highcharts.js')}}"></script>
-<script src="{{ URL::asset('js/highcharts/modules/js/exporting.js')}}"></script>
 
 	@yield('javascript')
 

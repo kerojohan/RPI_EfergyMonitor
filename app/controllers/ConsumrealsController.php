@@ -104,10 +104,7 @@ class ConsumrealsController extends \BaseController {
 		return Redirect::route('consumreals.index');
 	}
 
-	public static function consumdia($dia,$mes,$any){  
-		$a=array();
-		$from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
-		$to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
+	public static function calculpreu($from,$to){
 		$consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
 		$preukwh=Consumreal::$preukwh;
 		$preu=0;
@@ -133,15 +130,30 @@ class ConsumrealsController extends \BaseController {
 			}
 			$cont++;
 		};
+		return $preu;
+	}
+
+	public static function maxpic($from,$to){
+		$pic=0;
 		$pic = Consumreal::whereBetween('date', array($from, $to))->max('value');
-		$a['preu']=$preu;
-		$a['consum']=$preu/$preukwh;
+		return $pic;
+	}
+
+
+	public static function consumdia($dia,$mes,$any){  
+		$a=array();
+		$from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
+		$to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
+		$preukwh=Consumreal::$preukwh;
+		$pic = self::maxpic($from,$to);
+		$a['preu']=self::calculpreu($from,$to);
+		$a['consum']=$a['preu']/$preukwh;
 		$a['pic']=$pic/1000;
 		return $a;
 	}
 
 	public static function consumdiajson($dia,$mes,$any){  
-		$consums=array();
+	$consums=array();
 		$a=array();
 		$from=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'));
 		$to=(new DateTime($any.'-'.$mes.'-'.$dia.' 00:00:00'))->add(new DateInterval('PT24H00S'));
@@ -185,30 +197,31 @@ class ConsumrealsController extends \BaseController {
 
 	public static function consumsreallast(){ 
 		$a=self::consumptiondata('last');
-	    return $a;
+		return $a;
 	}
 
 	public static function consumsreal(){ 
 		$a=self::consumptiondata();
-	   	return $a;
+		return $a;
 	}
+
 	public static function consumptiondata($parameter=null){
 		$a=array();
-	    $consums=array();
-	    $a['label']="consums";    
-	    $ara=(new DateTime());
-	    $from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
-	    $to=(new DateTime())->format('Y-m-d H:i:s');
+		$consums=array();
+		$a['label']="consums";    
+		$ara=(new DateTime());
+		$from = $ara->sub(new DateInterval('PT24H00S'))->format('Y-m-d H:i:s');
+		$to=(new DateTime())->format('Y-m-d H:i:s');
 		if($parameter=='last'){
-		   $consum = Consumreal::whereBetween('date', array($from, $to))->orderBy('date', 'desc')->first();
-		   array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+			$consum = Consumreal::whereBetween('date', array($from, $to))->orderBy('date', 'desc')->first();
+			array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
 		}else{
-		   $consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
-		   foreach ($consumreals as $consum)    {
-		     array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
-		   };
+			$consumreals = Consumreal::whereBetween('date', array($from, $to))->get();
+			foreach ($consumreals as $consum)    {
+				array_push($consums, [strtotime($consum->date)*1000,(int)$consum->value]);
+			};
 		}
-	    $a['data']=$consums;
-	    return $a;
+		$a['data']=$consums;
+		return $a;
 	}
 }
